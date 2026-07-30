@@ -121,4 +121,6 @@ Student -------- Enrollment -------- Course
 
 ## Author
 
-Your Name
+Sruthi
+
+#Project submitted successfully.
