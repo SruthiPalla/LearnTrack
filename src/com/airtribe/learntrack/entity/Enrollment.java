@@ -1,12 +1,16 @@
 package com.airtribe.learntrack.entity;
 
+import com.airtribe.learntrack.enums.EnrollmentStatus;
+
+import java.time.LocalDate;
+
 public class Enrollment {
 
     private int id;
     private int studentId;
     private int courseId;
-    private String enrollmentDate;
-    private String status;
+    private LocalDate enrollmentDate;
+    private EnrollmentStatus status;
 
     public Enrollment() {
     }
@@ -14,63 +18,48 @@ public class Enrollment {
     public Enrollment(int id,
                       int studentId,
                       int courseId,
-                      String enrollmentDate,
-                      String status){
+                      LocalDate enrollmentDate,
+                      EnrollmentStatus status) {
 
-        this.id=id;
-        this.studentId=studentId;
-        this.courseId=courseId;
-        this.enrollmentDate=enrollmentDate;
-        this.status=status;
+        this.id = id;
+        this.studentId = studentId;
+        this.courseId = courseId;
+        this.enrollmentDate = enrollmentDate;
+        this.status = status;
     }
 
-    public int getId(){
+    public int getId() {
         return id;
     }
 
-    public void setId(int id){
-        this.id=id;
-    }
-
-    public int getStudentId(){
+    public int getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(int studentId){
-        this.studentId=studentId;
-    }
-
-    public int getCourseId(){
+    public int getCourseId() {
         return courseId;
     }
 
-    public void setCourseId(int courseId){
-        this.courseId=courseId;
-    }
-
-    public String getEnrollmentDate(){
+    public LocalDate getEnrollmentDate() {
         return enrollmentDate;
     }
 
-    public void setEnrollmentDate(String enrollmentDate){
-        this.enrollmentDate=enrollmentDate;
-    }
-
-    public String getStatus(){
+    public EnrollmentStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status){
-        this.status=status;
+    public void setStatus(EnrollmentStatus status) {
+        this.status = status;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
 
-        return "Enrollment ID : "+id+
-                "\nStudent ID : "+studentId+
-                "\nCourse ID : "+courseId+
-                "\nDate : "+enrollmentDate+
-                "\nStatus : "+status;
+        return "\nEnrollment ID : " + id +
+                "\nStudent ID : " + studentId +
+                "\nCourse ID : " + courseId +
+                "\nDate : " + enrollmentDate +
+                "\nStatus : " + status;
     }
+
 }

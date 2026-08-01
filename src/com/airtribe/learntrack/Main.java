@@ -1,13 +1,16 @@
-package com.airtribe.learntrack.ui;
+package com.airtribe.learntrack;
 
+import com.airtribe.learntrack.constants.MenuOptions;
 import com.airtribe.learntrack.entity.Course;
 import com.airtribe.learntrack.entity.Enrollment;
 import com.airtribe.learntrack.entity.Student;
+import com.airtribe.learntrack.enums.EnrollmentStatus;
 import com.airtribe.learntrack.exception.EntityNotFoundException;
 import com.airtribe.learntrack.service.CourseService;
 import com.airtribe.learntrack.service.EnrollmentService;
 import com.airtribe.learntrack.service.StudentService;
 import com.airtribe.learntrack.util.IdGenerator;
+import com.airtribe.learntrack.util.InputValidator;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -16,9 +19,14 @@ public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
 
-    private static final StudentService studentService = new StudentService();
-    private static final CourseService courseService = new CourseService();
-    private static final EnrollmentService enrollmentService = new EnrollmentService();
+    private static final StudentService studentService =
+            new StudentService();
+
+    private static final CourseService courseService =
+            new CourseService();
+
+    private static final EnrollmentService enrollmentService =
+            new EnrollmentService();
 
     public static void main(String[] args) {
 
@@ -26,21 +34,7 @@ public class Main {
 
         do {
 
-            System.out.println("\n==============================");
-            System.out.println("      LEARNTRACK SYSTEM");
-            System.out.println("==============================");
-            System.out.println("1. Add Student");
-            System.out.println("2. View Students");
-            System.out.println("3. Search Student");
-            System.out.println("4. Deactivate Student");
-            System.out.println("5. Add Course");
-            System.out.println("6. View Courses");
-            System.out.println("7. Activate/Deactivate Course");
-            System.out.println("8. Enroll Student");
-            System.out.println("9. View Student Enrollments");
-            System.out.println("10. Update Enrollment Status");
-            System.out.println("0. Exit");
-            System.out.print("Enter Choice : ");
+            displayMenu();
 
             try {
 
@@ -48,52 +42,52 @@ public class Main {
 
                 switch (choice) {
 
-                    case 1:
+                    case MenuOptions.ADD_STUDENT:
                         addStudent();
                         break;
 
-                    case 2:
+                    case MenuOptions.VIEW_STUDENTS:
                         studentService.listStudents();
                         break;
 
-                    case 3:
+                    case MenuOptions.SEARCH_STUDENT:
                         searchStudent();
                         break;
 
-                    case 4:
+                    case MenuOptions.DEACTIVATE_STUDENT:
                         deactivateStudent();
                         break;
 
-                    case 5:
+                    case MenuOptions.ADD_COURSE:
                         addCourse();
                         break;
 
-                    case 6:
+                    case MenuOptions.VIEW_COURSES:
                         courseService.listCourses();
                         break;
 
-                    case 7:
+                    case MenuOptions.UPDATE_COURSE:
                         updateCourseStatus();
                         break;
 
-                    case 8:
+                    case MenuOptions.ENROLL_STUDENT:
                         enrollStudent();
                         break;
 
-                    case 9:
+                    case MenuOptions.VIEW_ENROLLMENTS:
                         viewStudentEnrollments();
                         break;
 
-                    case 10:
+                    case MenuOptions.UPDATE_ENROLLMENT:
                         updateEnrollmentStatus();
                         break;
 
-                    case 0:
-                        System.out.println("Thank you for using LearnTrack.");
+                    case MenuOptions.EXIT:
+                        System.out.println("\nThank you for using LearnTrack.");
                         break;
 
                     default:
-                        System.out.println("Invalid Option.");
+                        System.out.println("\nInvalid Choice.");
 
                 }
 
@@ -111,7 +105,32 @@ public class Main {
 
             }
 
-        } while (choice != 0);
+        } while (choice != MenuOptions.EXIT);
+
+    }
+
+    private static void displayMenu() {
+
+        System.out.println("\n================================");
+        System.out.println("      LEARNTRACK SYSTEM");
+        System.out.println("================================");
+
+        System.out.println("1. Add Student");
+        System.out.println("2. View Students");
+        System.out.println("3. Search Student");
+        System.out.println("4. Deactivate Student");
+
+        System.out.println("5. Add Course");
+        System.out.println("6. View Courses");
+        System.out.println("7. Update Course Status");
+
+        System.out.println("8. Enroll Student");
+        System.out.println("9. View Student Enrollments");
+        System.out.println("10. Update Enrollment Status");
+
+        System.out.println("0. Exit");
+
+        System.out.print("\nEnter Choice : ");
 
     }
 
@@ -126,21 +145,36 @@ public class Main {
         System.out.print("Email : ");
         String email = scanner.nextLine();
 
+        if (!InputValidator.isValidEmail(email)) {
+
+            System.out.println("Invalid Email.");
+
+            return;
+
+        }
+
         System.out.print("Batch : ");
         String batch = scanner.nextLine();
 
         Student student = new Student(
-                IdGenerator.getNextStudentId(),
+
+                IdGenerator.generateStudentId(),
+
                 firstName,
+
                 lastName,
+
                 email,
+
                 batch,
+
                 true
+
         );
 
         studentService.addStudent(student);
 
-        System.out.println("Student Added Successfully.");
+        System.out.println("\nStudent Added Successfully.");
 
     }
 
@@ -152,11 +186,12 @@ public class Main {
 
             int id = Integer.parseInt(scanner.nextLine());
 
-            Student student = studentService.findStudentById(id);
+            Student student =
+                    studentService.findStudentById(id);
 
             System.out.println(student);
 
-        } catch (Exception e) {
+        } catch (EntityNotFoundException e) {
 
             System.out.println(e.getMessage());
 
@@ -176,18 +211,17 @@ public class Main {
 
             System.out.println("Student Deactivated.");
 
-        } catch (EntityNotFoundException e) {
+        } catch (Exception e) {
 
             System.out.println(e.getMessage());
 
         }
 
     }
-
     private static void addCourse() {
 
         System.out.print("Course Name : ");
-        String name = scanner.nextLine();
+        String courseName = scanner.nextLine();
 
         System.out.print("Description : ");
         String description = scanner.nextLine();
@@ -196,8 +230,8 @@ public class Main {
         int duration = Integer.parseInt(scanner.nextLine());
 
         Course course = new Course(
-                IdGenerator.getNextCourseId(),
-                name,
+                IdGenerator.generateCourseId(),
+                courseName,
                 description,
                 duration,
                 true
@@ -205,8 +239,7 @@ public class Main {
 
         courseService.addCourse(course);
 
-        System.out.println("Course Added.");
-
+        System.out.println("\nCourse Added Successfully.");
     }
 
     private static void updateCourseStatus() {
@@ -216,19 +249,18 @@ public class Main {
             System.out.print("Course ID : ");
             int id = Integer.parseInt(scanner.nextLine());
 
-            System.out.print("Activate? (true/false): ");
+            System.out.print("Activate Course? (true/false): ");
             boolean active = Boolean.parseBoolean(scanner.nextLine());
 
-            courseService.changeCourseStatus(id, active);
+            courseService.updateCourseStatus(id, active);
 
-            System.out.println("Course Updated.");
+            System.out.println("Course status updated successfully.");
 
         } catch (Exception e) {
 
             System.out.println(e.getMessage());
 
         }
-
     }
 
     private static void enrollStudent() {
@@ -242,16 +274,16 @@ public class Main {
             int courseId = Integer.parseInt(scanner.nextLine());
 
             Enrollment enrollment = new Enrollment(
-                    IdGenerator.getNextEnrollmentId(),
+                    IdGenerator.generateEnrollmentId(),
                     studentId,
                     courseId,
-                    LocalDate.now().toString(),
-                    "ACTIVE"
+                    LocalDate.now(),
+                    EnrollmentStatus.ACTIVE
             );
 
             enrollmentService.enrollStudent(enrollment);
 
-            System.out.println("Enrollment Successful.");
+            System.out.println("Student enrolled successfully.");
 
         } catch (Exception e) {
 
@@ -263,27 +295,66 @@ public class Main {
 
     private static void viewStudentEnrollments() {
 
-        System.out.print("Student ID : ");
+        try {
 
-        int studentId = Integer.parseInt(scanner.nextLine());
+            System.out.print("Enter Student ID : ");
 
-        enrollmentService.viewStudentEnrollments(studentId);
+            int studentId = Integer.parseInt(scanner.nextLine());
+
+            enrollmentService.viewStudentEnrollments(studentId);
+
+        } catch (Exception e) {
+
+            System.out.println(e.getMessage());
+
+        }
 
     }
-
     private static void updateEnrollmentStatus() {
 
-        System.out.print("Enrollment ID : ");
+        try {
 
-        int enrollmentId = Integer.parseInt(scanner.nextLine());
+            System.out.print("Enrollment ID : ");
+            int enrollmentId = Integer.parseInt(scanner.nextLine());
 
-        System.out.print("Status (ACTIVE/COMPLETED/CANCELLED): ");
+            System.out.println("\nSelect Status");
+            System.out.println("1. ACTIVE");
+            System.out.println("2. COMPLETED");
+            System.out.println("3. CANCELLED");
+            System.out.print("Enter Choice : ");
 
-        String status = scanner.nextLine().toUpperCase();
+            int option = Integer.parseInt(scanner.nextLine());
 
-        enrollmentService.updateStatus(enrollmentId, status);
+            EnrollmentStatus status;
 
-        System.out.println("Status Updated.");
+            switch (option) {
+
+                case 1:
+                    status = EnrollmentStatus.ACTIVE;
+                    break;
+
+                case 2:
+                    status = EnrollmentStatus.COMPLETED;
+                    break;
+
+                case 3:
+                    status = EnrollmentStatus.CANCELLED;
+                    break;
+
+                default:
+                    System.out.println("Invalid Status.");
+                    return;
+            }
+
+            enrollmentService.updateStatus(enrollmentId, status);
+
+            System.out.println("Enrollment status updated successfully.");
+
+        } catch (Exception e) {
+
+            System.out.println(e.getMessage());
+
+        }
 
     }
 
