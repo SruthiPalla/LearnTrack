@@ -2,22 +2,22 @@ package com.airtribe.learntrack.util;
 
 public class IdGenerator {
 
-    private static int studentIdCounter = 1001;
-    private static int courseIdCounter = 501;
-    private static int enrollmentIdCounter = 1;
+    private static int studentId = 1001;
+    private static int courseId = 501;
+    private static int enrollmentId = 1;
 
     private IdGenerator() {
     }
 
-    public static int getNextStudentId() {
-        return studentIdCounter++;
+    public static int generateStudentId() {
+        return studentId++;
     }
 
-    public static int getNextCourseId() {
-        return courseIdCounter++;
+    public static int generateCourseId() {
+        return courseId++;
     }
 
-    public static int getNextEnrollmentId() {
-        return enrollmentIdCounter++;
+    public static int generateEnrollmentId() {
+        return enrollmentId++;
     }
 }

@@ -1,79 +1,68 @@
 package com.airtribe.learntrack.service;
 
 import com.airtribe.learntrack.entity.Enrollment;
+import com.airtribe.learntrack.enums.EnrollmentStatus;
+import com.airtribe.learntrack.repository.EnrollmentRepository;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class EnrollmentService {
 
-    private ArrayList<Enrollment> enrollments =
-            new ArrayList<>();
+    private final EnrollmentRepository repository =
+            new EnrollmentRepository();
 
     public void enrollStudent(Enrollment enrollment) {
-
-        enrollments.add(enrollment);
-
+        repository.save(enrollment);
     }
 
-    public void listEnrollments() {
+    public List<Enrollment> getAllEnrollments() {
+        return repository.findAll();
+    }
+
+    public void viewStudentEnrollments(int studentId) {
+
+        List<Enrollment> enrollments =
+                repository.findByStudentId(studentId);
 
         if (enrollments.isEmpty()) {
 
             System.out.println("No enrollments found.");
 
             return;
-
         }
 
         for (Enrollment enrollment : enrollments) {
-
-            System.out.println("-----------------------");
-
+            System.out.println("----------------------------");
             System.out.println(enrollment);
-
         }
-
-    }
-
-    public void viewStudentEnrollments(int studentId) {
-
-        boolean found = false;
-
-        for (Enrollment enrollment : enrollments) {
-
-            if (enrollment.getStudentId() == studentId) {
-
-                System.out.println(enrollment);
-
-                found = true;
-
-            }
-
-        }
-
-        if (!found) {
-
-            System.out.println("No enrollments found.");
-
-        }
-
     }
 
     public void updateStatus(int enrollmentId,
-                             String status) {
+                             EnrollmentStatus status) {
 
-        for (Enrollment enrollment : enrollments) {
+        Enrollment enrollment =
+                repository.findById(enrollmentId);
 
-            if (enrollment.getId() == enrollmentId) {
-
-                enrollment.setStatus(status);
-
-                break;
-
-            }
-
+        if (enrollment != null) {
+            enrollment.setStatus(status);
+        } else {
+            System.out.println("Enrollment not found.");
         }
-
     }
 
+    public void listEnrollments() {
+
+        List<Enrollment> enrollments =
+                repository.findAll();
+
+        if (enrollments.isEmpty()) {
+            System.out.println("No enrollments available.");
+            return;
+        }
+
+        for (Enrollment enrollment : enrollments) {
+            System.out.println("----------------------------");
+            System.out.println(enrollment);
+        }
+    }
 }

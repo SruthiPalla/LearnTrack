@@ -8,28 +8,25 @@ public class Student extends Person {
     public Student() {
     }
 
-    // Constructor Overloading
     public Student(int id, String firstName, String lastName,
                    String email, String batch, boolean active) {
 
         super(id, firstName, lastName, email);
-
         this.batch = batch;
         this.active = active;
     }
 
-    public Student(int id, String firstName,
-                   String lastName, String batch) {
+    // Constructor Overloading
+    public Student(int id, String firstName, String lastName, String batch) {
 
         super(id, firstName, lastName, "");
-
         this.batch = batch;
         this.active = true;
     }
 
     @Override
     public String getDisplayName() {
-        return "Student : " + firstName + " " + lastName;
+        return "Student : " + super.getDisplayName();
     }
 
     public String getBatch() {
@@ -51,8 +48,8 @@ public class Student extends Person {
     @Override
     public String toString() {
 
-        return "ID : " + id +
-                "\nName : " + firstName + " " + lastName +
+        return "\nStudent ID : " + id +
+                "\nName : " + getDisplayName() +
                 "\nEmail : " + email +
                 "\nBatch : " + batch +
                 "\nActive : " + active;

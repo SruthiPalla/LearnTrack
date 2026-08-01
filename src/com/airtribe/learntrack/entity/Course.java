@@ -44,7 +44,7 @@ public class Course {
         return description;
     }
 
-    public void setDescription(String description){
+    public void setDescription(String description) {
         this.description=description;
     }
 
@@ -52,7 +52,7 @@ public class Course {
         return durationInWeeks;
     }
 
-    public void setDurationInWeeks(int durationInWeeks){
+    public void setDurationInWeeks(int durationInWeeks) {
         this.durationInWeeks=durationInWeeks;
     }
 
@@ -60,17 +60,17 @@ public class Course {
         return active;
     }
 
-    public void setActive(boolean active){
+    public void setActive(boolean active) {
         this.active=active;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
 
-        return "Course ID : "+id+
-                "\nCourse Name : "+courseName+
-                "\nDescription : "+description+
-                "\nDuration : "+durationInWeeks+" Weeks"+
-                "\nActive : "+active;
+        return "\nCourse ID : " + id +
+                "\nCourse Name : " + courseName +
+                "\nDescription : " + description +
+                "\nDuration : " + durationInWeeks + " Weeks" +
+                "\nActive : " + active;
     }
 }
